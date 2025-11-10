@@ -37,9 +37,9 @@ jobs:
         git tag -a $(GitVersion.FullSemVer) -m "${TAG_MESSAGE:-$RESOLVEDTAGMESSAGE}"
         git push origin $(GitVersion.FullSemVer)
     env:
-      GIT_AUTHOR_NAME: 'github-actions'
-      GIT_AUTHOR_EMAIL: 'actions@github.com'
-      GIT_COMMITTER_NAME: 'github-actions'
-      GIT_COMMITTER_EMAIL: 'actions@github.com'
+      GIT_AUTHOR_NAME: 'Azure DevOps Build Service'
+      GIT_AUTHOR_EMAIL: 'devops@yourdomain.com'
+      GIT_COMMITTER_NAME: 'Azure DevOps Build Service'
+      GIT_COMMITTER_EMAIL: 'devops@yourdomain.com'
       TAG_MESSAGE: ${{ parameters.tagMessage }}
       RESOLVEDTAGMESSAGE: $(ResolvedTagMessage)
