@@ -1,0 +1,46 @@
+parameters:
+  gitVersionConfigFile: 'GitVersion.yml' # defaults to 'GitVersion.yml' which is the binaries default. If you wish to change this supply a new path via the parameter when calling the template.
+#  tagMessage: 'Version $(GitVersion.FullSemVer) on branch $(GitVersion.BranchName)' # defaults to 'Version $(GitVersion.FullSemVer) on branch $(GitVersion.BranchName)'. If you wish to change this supply a new description via the parameter when calling the template. Suffix will always contain the version.
+  tagMessage: ''
+#  gitVersionRuntime: 'core'
+
+jobs:
+- job: Tag_Branch
+  displayName: Tag Branch
+  steps:
+  - checkout: self
+    clean: true
+    persistCredentials: true
+    fetchDepth: 0
+  - task: gitversion/setup@3.0.3
+    inputs:
+      versionSpec: '6.0.0'
+  - task: gitversion/execute@3.0.3
+    inputs:
+      useConfigFile: true
+      configFilePath: ${{ parameters.gitVersionConfigFile }}
+  - task: Bash@3
+    displayName: 'Resolve Commit Message'
+    inputs:
+      targetType: 'inline'
+      script: |
+        echo "Fetching latest commit message..."
+        COMMIT_MSG=$(git log -1 --pretty=%s)
+        echo "Commit message is: $COMMIT_MSG"
+        echo "##vso[task.setvariable variable=ResolvedTagMessage]$COMMIT_MSG"
+  - task: Bash@3
+    displayName: 'Tag and Push Version'
+    inputs:
+      targetType: 'inline'
+      script: |
+        echo "Tagging version $(GitVersion.FullSemVer) with message:"
+        echo "${TAG_MESSAGE:-$RESOLVEDTAGMESSAGE}"
+        git tag -a $(GitVersion.FullSemVer) -m "${TAG_MESSAGE:-$RESOLVEDTAGMESSAGE}"
+        git push origin $(GitVersion.FullSemVer)
+    env:
+      GIT_AUTHOR_NAME: 'github-actions'
+      GIT_AUTHOR_EMAIL: 'actions@github.com'
+      GIT_COMMITTER_NAME: 'github-actions'
+      GIT_COMMITTER_EMAIL: 'actions@github.com'
+      TAG_MESSAGE: ${{ parameters.tagMessage }}
+      RESOLVEDTAGMESSAGE: $(ResolvedTagMessage)
