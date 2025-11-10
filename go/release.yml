@@ -9,7 +9,7 @@
 #     clean: false
 #     goVersion: 1.24.3
 #     goReleaserVersion: v2.10.1
-#     owner: edgeforge
+#     owner: michielvh
 #     dockerCondition: eq(variables['Build.SourceBranchName'], 'main')
 #     poolName: default
 #
@@ -47,18 +47,7 @@ parameters:
 
 - name: owner
   type: string
-  default: 'edgeforge'
-
-# --------------------------------------------------
-# Metadata / tagging
-# --------------------------------------------------
-- name: engieAssetPriority
-  type: string
-  default: 'P4'
-
-- name: engieAssetClassification
-  type: string
-  default: 'internal'
+  default: 'michielvh'
 
 # --------------------------------------------------
 # Infrastructure
@@ -223,7 +212,7 @@ stages:
     - task: JfrogCliV2@1
       displayName: "Configure Artifactory for Go modules"
       inputs:
-        jfrogPlatformConnection: 'JFrog Platform'
+        jfrogPlatformConnection: 'CONNECTION TO ARTIFACTORY'
         command: jf go-config --server-id-resolve="1ba894ff-0587-466f-afaa-721bbc527d28" --repo-resolve="prd-go-virtual"
 
     # -- build --------------------------------------------------------
@@ -305,7 +294,7 @@ stages:
       displayName: "Docker login"
       inputs:
         command: login
-        containerRegistry: bd989720-133a-4625-969f-b343870eb376
+        containerRegistry: ContainerRegID
 
     - bash: |
         docker buildx inspect "${BUILDX_BUILDER}" || \

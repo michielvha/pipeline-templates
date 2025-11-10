@@ -1,8 +1,7 @@
 parameters:
   gitVersionConfigFile: 'GitVersion.yml' # defaults to 'GitVersion.yml' which is the binaries default. If you wish to change this supply a new path via the parameter when calling the template.
-#  tagMessage: 'Version $(GitVersion.FullSemVer) on branch $(GitVersion.BranchName)' # defaults to 'Version $(GitVersion.FullSemVer) on branch $(GitVersion.BranchName)'. If you wish to change this supply a new description via the parameter when calling the template. Suffix will always contain the version.
-  tagMessage: ''
-#  gitVersionRuntime: 'core'
+  tagMessage: '' # 'Version $(GitVersion.FullSemVer) on branch $(GitVersion.BranchName)' # defaults to 'Version $(GitVersion.FullSemVer) on branch $(GitVersion.BranchName)'. If you wish to change this supply a new description via the parameter when calling the template. Suffix will always contain the version.
+
 
 jobs:
 - job: Tag_Branch

@@ -1,8 +1,6 @@
-# Introduction 
+# Azure Pipeline Templates
 
-This repository holds azure pipeline templates for various languages
-
-# Overiew
+This repository holds azure pipeline templates for:
 
 - [docker](docker)
 - [gitversion](gitversion)

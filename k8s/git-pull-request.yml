@@ -6,8 +6,6 @@ parameters:
 jobs:
   - job: 
     displayName: Create Pull requests
-    pool:
-      name: K8S-AZURE-AWS
     steps:
       - bash: |
           az repos pr create --description "$(Build.SourceVersionMessage) ${{ parameters.sourceBranch }} to ${{ parameters.targetBranch }}" \
